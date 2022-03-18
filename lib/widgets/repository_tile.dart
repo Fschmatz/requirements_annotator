@@ -55,8 +55,14 @@ class _RepositoryTileState extends State<RepositoryTile> {
   Widget build(BuildContext context) {
     final Brightness _tagTextBrightness = Theme.of(context).brightness;
 
-    return Card(
-      child: Text('oi'),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: SizedBox(
+        height: 50,
+        child: Card(
+          child: Center(child: Text('oi')),
+        ),
+      ),
     );
   }
 }

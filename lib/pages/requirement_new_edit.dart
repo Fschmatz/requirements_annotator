@@ -52,12 +52,12 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
             },
           )
         ],
-        title: const Text('New Repository'),
+        title: const Text('New Requirement'),
       ),
       body: ListView(
         children: [
           ListTile(
-            title: Text("Repository Link",
+            title: Text("Name",
                 style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
