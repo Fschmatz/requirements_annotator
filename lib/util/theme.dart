@@ -22,6 +22,9 @@ ThemeData light = ThemeData(
             color: Color(0xFF000000))),
     cardTheme: const CardTheme(
       color: Color(0xFFF6F6F6),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(12)),
+      ),
     ),
     inputDecorationTheme: InputDecorationTheme(
         focusColor:  Colors.cyan,
@@ -90,6 +93,9 @@ ThemeData dark = ThemeData(
             color: Color(0xFFFFFFFF))),
     cardTheme: const CardTheme(
       color: Color(0xFF313034),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(12)),
+      ),
     ),
     inputDecorationTheme: InputDecorationTheme(
         focusColor: const Color(0xFF68DEDA),

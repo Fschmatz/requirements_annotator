@@ -3,16 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../widgets/dialog_alert_error.dart';
 
-class RequirementNewEdit extends StatefulWidget {
-
+class AppNewEdit extends StatefulWidget {
 
   @override
-  _RequirementNewEditState createState() => _RequirementNewEditState();
+  _AppNewEditState createState() => _AppNewEditState();
 
-  RequirementNewEdit({Key? key}) : super(key: key);
+  AppNewEdit({Key? key}) : super(key: key);
 }
 
-class _RequirementNewEditState extends State<RequirementNewEdit> {
+class _AppNewEditState extends State<AppNewEdit> {
 
   TextEditingController customControllerRepoLink = TextEditingController();
 

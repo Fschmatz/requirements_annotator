@@ -1,29 +1,20 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import '../util/utils_functions.dart';
+import 'package:requirements_annotator/pages/requirement_list.dart';
 
-class RepositoryTile extends StatefulWidget {
-
-
-  RepositoryTile(
-      {Key? key})
-      : super(key: key);
+class RequirementTile extends StatefulWidget {
+  RequirementTile({Key? key}) : super(key: key);
 
   @override
-  _RepositoryTileState createState() => _RepositoryTileState();
+  _RequirementTileState createState() => _RequirementTileState();
 }
 
-class _RepositoryTileState extends State<RepositoryTile> {
-
-
+class _RequirementTileState extends State<RequirementTile> {
   @override
   void initState() {
     super.initState();
   }
 
-
   showAlertDialogOkDelete(BuildContext context) {
-
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -41,8 +32,8 @@ class _RepositoryTileState extends State<RepositoryTile> {
               ),
               onPressed: () {
                 Navigator.of(context).pop();
-               // _delete();
-               // widget.refreshList();
+                // _delete();
+                // widget.refreshList();
               },
             )
           ],
@@ -53,16 +44,17 @@ class _RepositoryTileState extends State<RepositoryTile> {
 
   @override
   Widget build(BuildContext context) {
-    final Brightness _tagTextBrightness = Theme.of(context).brightness;
-
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: SizedBox(
-        height: 50,
+    return const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16),
         child: Card(
-          child: Center(child: Text('oi')),
-        ),
-      ),
-    );
+          child: ListTile(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(12)),
+            ),
+            title: Text('Olá'),
+
+
+          ),
+        ));
   }
 }
