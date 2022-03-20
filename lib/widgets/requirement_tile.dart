@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:requirements_annotator/pages/requirement_list.dart';
+import 'package:requirements_annotator/pages/requirement/requirement_list.dart';
 
 class RequirementTile extends StatefulWidget {
   RequirementTile({Key? key}) : super(key: key);

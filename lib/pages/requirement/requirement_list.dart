@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:requirements_annotator/pages/requirement/requirement_new_edit.dart';
+import '../../widgets/requirement_tile.dart';
 
-import '../widgets/application_tile.dart';
-import '../widgets/requirement_tile.dart';
-import 'configs/settings_page.dart';
-import 'requirement_new_edit.dart';
 
 class RequirementList extends StatefulWidget {
   const RequirementList({Key? key}) : super(key: key);

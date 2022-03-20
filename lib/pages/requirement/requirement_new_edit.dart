@@ -1,11 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../widgets/dialog_alert_error.dart';
+import '../../widgets/dialog_alert_error.dart';
 
 class RequirementNewEdit extends StatefulWidget {
-
-
   @override
   _RequirementNewEditState createState() => _RequirementNewEditState();
 
@@ -13,12 +10,12 @@ class RequirementNewEdit extends StatefulWidget {
 }
 
 class _RequirementNewEditState extends State<RequirementNewEdit> {
-
-  TextEditingController customControllerRepoLink = TextEditingController();
+  TextEditingController controllerName = TextEditingController();
+  bool required = false;
 
   String checkForErrors() {
     String errors = "";
-    if (customControllerRepoLink.text.isEmpty) {
+    if (controllerName.text.isEmpty) {
       errors += "Name is empty\n";
     }
     return errors;
@@ -65,9 +62,9 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
             title: TextField(
               autofocus: true,
               minLines: 1,
-              maxLength: 150,
+              maxLength: 500,
               maxLengthEnforcement: MaxLengthEnforcement.enforced,
-              controller: customControllerRepoLink,
+              controller: controllerName,
               textCapitalization: TextCapitalization.sentences,
               decoration: const InputDecoration(
                 border: InputBorder.none,
@@ -78,6 +75,25 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
                 ),
               ),
             ),
+          ),
+          ListTile(
+            title: Text("State",
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.secondary)),
+          ),
+          CheckboxListTile(
+            activeColor: Theme.of(context).colorScheme.secondary,
+            key: UniqueKey(),
+            value: required,
+            title: const Text('Required'),
+            onChanged: (v) {
+              setState(() {
+                required = !required;
+              });
+              print(required);
+            },
           ),
         ],
       ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-
-import '../widgets/application_tile.dart';
+import 'package:requirements_annotator/pages/requirement/requirement_new_edit.dart';
+import 'app/app_list.dart';
+import 'app/app_new_edit.dart';
 import 'configs/settings_page.dart';
-import 'requirement_new_edit.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -34,7 +34,7 @@ class _HomeState extends State<Home> {
                   Navigator.push(
                       context,
                       MaterialPageRoute<void>(
-                        builder: (BuildContext context) => RequirementNewEdit(),
+                        builder: (BuildContext context) => AppNewEdit(),
                         fullscreenDialog: true,
                       ));
                 }),
@@ -59,19 +59,7 @@ class _HomeState extends State<Home> {
           duration: const Duration(milliseconds: 600),
           child: loading
               ? const Center(child: SizedBox.shrink())
-              : GridView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 14),
-                  itemCount: 10,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: 2,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                      crossAxisCount: 2),
-                  itemBuilder: (BuildContext context, int index) {
-                    return ApplicationTile(
-                      key: UniqueKey(),
-                    );
-                  }),
+              : const AppList()
         ));
   }
 }
