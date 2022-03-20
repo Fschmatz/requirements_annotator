@@ -1,15 +1,13 @@
+class Requirement {
+  int id;
+  String name;
+  int state;
+  int appId;
 
-class Requirement  {
-  int? id;
-  int? idGit;
-  String? name;
-
-  Requirement(
-      {this.id,
-      required this.idGit,
-      required this.name,
-     });
-
-
-
+  Requirement({
+    required this.id,
+    required this.name,
+    required this.state,
+    required this.appId,
+  });
 }

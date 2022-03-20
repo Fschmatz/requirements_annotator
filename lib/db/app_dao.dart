@@ -3,23 +3,22 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
-class RequirementDao {
+class AppDao {
   static const _databaseName = 'Req.db';
   static const _databaseVersion = 1;
 
-  static const table = 'requirements';
+  static const table = 'apps';
   static const columnId = 'id';
   static const columnName = 'name';
-  static const columnState = 'state'; // 0 obg 1 ñ obg
-  static const columnAppId = 'appId';
+  static const columnDescription = 'description';
 
   static Database? _database;
 
   Future<Database> get database async => _database ??= await _initDatabase();
 
-  RequirementDao._privateConstructor();
+  AppDao._privateConstructor();
 
-  static final RequirementDao instance = RequirementDao._privateConstructor();
+  static final AppDao instance = AppDao._privateConstructor();
 
   Future<Database> _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
@@ -33,8 +32,7 @@ class RequirementDao {
           CREATE TABLE $table (
            $columnId INTEGER PRIMARY KEY,
            $columnName TEXT NOT NULL, 
-           $columnState INTEGER NOT NULL,  
-           $columnAppId INTEGER NOT NULL                   
+           $columnDescription TEXT                    
           )
           ''');
   }
