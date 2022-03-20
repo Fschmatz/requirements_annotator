@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:requirements_annotator/db/requirement_dao.dart';
 import '../../widgets/dialog_alert_error.dart';
 
 class RequirementNewEdit extends StatefulWidget {
+
+  int appId;
+
   @override
   _RequirementNewEditState createState() => _RequirementNewEditState();
 
-  RequirementNewEdit({Key? key}) : super(key: key);
+  RequirementNewEdit({Key? key, required this.appId}) : super(key: key);
 }
 
 class _RequirementNewEditState extends State<RequirementNewEdit> {
+
   TextEditingController controllerName = TextEditingController();
   bool required = false;
+  final reqs = RequirementDao.instance;
 
   String checkForErrors() {
     String errors = "";
@@ -20,6 +26,16 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
     }
     return errors;
   }
+
+  Future<void> _save() async {
+    Map<String, dynamic> row = {
+      RequirementDao.columnName: controllerName.text,
+      RequirementDao.columnState: required == true ? 1 : 0,
+      RequirementDao.columnAppId: widget.appId,
+    };
+    final idTask = await reqs.insert(row);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +50,7 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
             onPressed: () async {
               String errors = checkForErrors();
               if (errors.isEmpty) {
-                //getRepositoryDataAndSave();
+                _save();
                 Navigator.of(context).pop();
               } else {
                 showDialog(

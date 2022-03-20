@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:requirements_annotator/db/app_dao.dart';
 import '../../widgets/dialog_alert_error.dart';
 
 class AppNewEdit extends StatefulWidget {
@@ -15,6 +16,7 @@ class _AppNewEditState extends State<AppNewEdit> {
 
   TextEditingController controllerName = TextEditingController();
   TextEditingController controllerDescription = TextEditingController();
+  final apps = AppDao.instance;
 
   String checkForErrors() {
     String errors = "";
@@ -23,6 +25,23 @@ class _AppNewEditState extends State<AppNewEdit> {
     }
     return errors;
   }
+
+  Future<void> _saveApp() async {
+    Map<String, dynamic> row = {
+      AppDao.columnName: controllerName.text,
+      AppDao.columnDescription: controllerDescription.text,
+    };
+    final idTask = await apps.insert(row);
+  }
+
+  /*Future<void> _updateTask() async {
+    Map<String, dynamic> row = {
+      TaskDao.columnId: widget.task.id,
+      TaskDao.columnTitle: customControllerTitle.text,
+      TaskDao.columnNote: customControllerNote.text,
+    };
+    final update = await tasks.update(row);
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +56,7 @@ class _AppNewEditState extends State<AppNewEdit> {
             onPressed: () async {
               String errors = checkForErrors();
               if (errors.isEmpty) {
-                //getRepositoryDataAndSave();
+                _saveApp();
                 Navigator.of(context).pop();
               } else {
                 showDialog(

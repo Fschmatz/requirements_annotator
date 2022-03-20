@@ -3,9 +3,5 @@ class App {
   String name;
   String description;
 
-  App({
-    required this.id,
-    required this.name,
-    required this.description
-  });
+  App(this.id, this.name, this.description);
 }

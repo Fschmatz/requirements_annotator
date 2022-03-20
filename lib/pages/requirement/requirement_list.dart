@@ -1,22 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:requirements_annotator/classes/requirement.dart';
+import 'package:requirements_annotator/db/requirement_dao.dart';
 import 'package:requirements_annotator/pages/requirement/requirement_new_edit.dart';
 import '../../widgets/requirement_tile.dart';
 
-
 class RequirementList extends StatefulWidget {
-  const RequirementList({Key? key}) : super(key: key);
+
+  int appId;
+
+  RequirementList({Key? key,required this.appId}) : super(key: key);
 
   @override
   _RequirementListState createState() => _RequirementListState();
 }
 
 class _RequirementListState extends State<RequirementList> {
-  List<Map<String, dynamic>> repositoriesList = [];
+  List<Map<String, dynamic>> _reqList = [];
   bool loading = false;
 
   @override
   void initState() {
+    getAllByAppId();
     super.initState();
+  }
+
+  Future<void> getAllByAppId() async {
+    final reqs = RequirementDao.instance;
+    var resp = await reqs.queryAllRows();
+    setState(() {
+      _reqList = resp;
+      loading = false;
+    });
   }
 
   @override
@@ -58,9 +72,16 @@ class _RequirementListState extends State<RequirementList> {
                       ),
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: 15,
+                      itemCount: _reqList.length,
                       itemBuilder: (context, index) {
-                        return RequirementTile();
+                        return RequirementTile(
+                          requirement: Requirement(
+                            _reqList[index]['id'],
+                            _reqList[index]['name'],
+                            _reqList[index]['state'],
+                            _reqList[index]['appId'],
+                          ),
+                        );
                       },
                     ),
                     const SizedBox(
@@ -76,7 +97,9 @@ class _RequirementListState extends State<RequirementList> {
           Navigator.push(
               context,
               MaterialPageRoute<void>(
-                builder: (BuildContext context) => RequirementNewEdit(),
+                builder: (BuildContext context) => RequirementNewEdit(
+                  appId: widget.appId,
+                ),
                 fullscreenDialog: true,
               ));
         },

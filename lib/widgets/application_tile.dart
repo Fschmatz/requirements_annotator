@@ -1,58 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:requirements_annotator/classes/app.dart';
 import 'package:requirements_annotator/pages/requirement/requirement_list.dart';
 
 class ApplicationTile extends StatefulWidget {
-  ApplicationTile({Key? key}) : super(key: key);
+
+  App app;
+  ApplicationTile({Key? key, required this.app}) : super(key: key);
 
   @override
   _ApplicationTileState createState() => _ApplicationTileState();
 }
 
 class _ApplicationTileState extends State<ApplicationTile> {
+
   @override
   void initState() {
     super.initState();
   }
 
-  showAlertDialogOkDelete(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text(
-            "Confirm",
-          ),
-          content: const Text(
-            "Delete ?",
-          ),
-          actions: [
-            TextButton(
-              child: const Text(
-                "Yes",
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-                // _delete();
-                // widget.refreshList();
-              },
-            )
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: const EdgeInsets.fromLTRB(16, 4, 16, 4),
       child: ListTile(
         onTap: () => Navigator.push(
             context,
             MaterialPageRoute<void>(
-              builder: (BuildContext context) => RequirementList(),
+              builder: (BuildContext context) => RequirementList(
+                appId: widget.app.id,
+              ),
               fullscreenDialog: true,
             )),
-        title: Center(child: Text('App Name X')),
+        title: Text(widget.app.name),
+        subtitle: Text(widget.app.description),
       ),
     );
   }
