@@ -8,12 +8,11 @@ class AppDao {
   static const _databaseVersion = 1;
 
   static const table = 'apps';
-  static const columnId = 'id';
+  static const columnId = 'id_app';
   static const columnName = 'name';
   static const columnDescription = 'description';
 
   static Database? _database;
-
   Future<Database> get database async => _database ??= await _initDatabase();
 
   AppDao._privateConstructor();
@@ -24,17 +23,7 @@ class AppDao {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
     return await openDatabase(path,
-        version: _databaseVersion, onCreate: _onCreate);
-  }
-
-  Future _onCreate(Database db, int version) async {
-    await db.execute('''
-          CREATE TABLE $table (
-           $columnId INTEGER PRIMARY KEY,
-           $columnName TEXT NOT NULL, 
-           $columnDescription TEXT                    
-          )
-          ''');
+        version: _databaseVersion);
   }
 
   Future<int> insert(Map<String, dynamic> row) async {
@@ -49,7 +38,7 @@ class AppDao {
 
   Future<List<Map<String, dynamic>>> queryAllRowsDesc() async {
     Database db = await instance.database;
-    return await db.rawQuery('SELECT * FROM $table ORDER BY id DESC');
+    return await db.rawQuery('SELECT * FROM $table ORDER BY id_app DESC');
   }
 
   Future<List<Map<String, dynamic>>> queryAllRowsByName() async {

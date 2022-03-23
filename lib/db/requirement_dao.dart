@@ -8,10 +8,11 @@ class RequirementDao {
   static const _databaseVersion = 1;
 
   static const table = 'requirements';
-  static const columnId = 'id';
+  static const columnId = 'id_requirement';
   static const columnName = 'name';
-  static const columnState = 'state'; // 0 obg 1 ñ obg
-  static const columnAppId = 'appId';
+  static const columnNote = 'note';
+  static const columnState = 'state'; // 0 func 1 ñ func
+  static const columnAppId = 'id_app';
 
   static Database? _database;
 
@@ -25,18 +26,7 @@ class RequirementDao {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
     return await openDatabase(path,
-        version: _databaseVersion, onCreate: _onCreate);
-  }
-
-  Future _onCreate(Database db, int version) async {
-    await db.execute('''
-          CREATE TABLE $table (
-           $columnId INTEGER PRIMARY KEY,
-           $columnName TEXT NOT NULL, 
-           $columnState INTEGER NOT NULL,  
-           $columnAppId INTEGER NOT NULL                   
-          )
-          ''');
+        version: _databaseVersion);
   }
 
   Future<int> insert(Map<String, dynamic> row) async {
@@ -49,9 +39,19 @@ class RequirementDao {
     return await db.query(table);
   }
 
+  Future<List<Map<String, dynamic>>> queryAllByIdApp(int appId) async {
+    Database db = await instance.database;
+    return await db.rawQuery('SELECT * FROM $table WHERE $columnAppId=$appId ORDER BY id_requirement');
+  }
+
+  Future<List<Map<String, dynamic>>> queryAllByIdAppState(int appId, int state) async {
+    Database db = await instance.database;
+    return await db.rawQuery('SELECT * FROM $table WHERE $columnAppId=$appId AND $columnState=$state ORDER BY id_requirement');
+  }
+
   Future<List<Map<String, dynamic>>> queryAllRowsDesc() async {
     Database db = await instance.database;
-    return await db.rawQuery('SELECT * FROM $table ORDER BY id DESC');
+    return await db.rawQuery('SELECT * FROM $table ORDER BY id_requirement DESC');
   }
 
   Future<List<Map<String, dynamic>>> queryAllRowsByName() async {

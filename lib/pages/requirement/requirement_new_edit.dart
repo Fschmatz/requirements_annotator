@@ -5,17 +5,19 @@ import '../../widgets/dialog_alert_error.dart';
 
 class RequirementNewEdit extends StatefulWidget {
 
+  Function() refreshList;
   int appId;
 
   @override
   _RequirementNewEditState createState() => _RequirementNewEditState();
 
-  RequirementNewEdit({Key? key, required this.appId}) : super(key: key);
+  RequirementNewEdit({Key? key, required this.appId, required this.refreshList}) : super(key: key);
 }
 
 class _RequirementNewEditState extends State<RequirementNewEdit> {
 
   TextEditingController controllerName = TextEditingController();
+  TextEditingController controllerNote = TextEditingController();
   bool required = false;
   final reqs = RequirementDao.instance;
 
@@ -30,6 +32,7 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
   Future<void> _save() async {
     Map<String, dynamic> row = {
       RequirementDao.columnName: controllerName.text,
+      RequirementDao.columnNote: controllerNote.text,
       RequirementDao.columnState: required == true ? 1 : 0,
       RequirementDao.columnAppId: widget.appId,
     };
@@ -51,6 +54,7 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
               String errors = checkForErrors();
               if (errors.isEmpty) {
                 _save();
+                widget.refreshList();
                 Navigator.of(context).pop();
               } else {
                 showDialog(
@@ -81,6 +85,31 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
               maxLength: 500,
               maxLengthEnforcement: MaxLengthEnforcement.enforced,
               controller: controllerName,
+              textCapitalization: TextCapitalization.sentences,
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                counterText: "",
+                helperText: "* Required",
+                prefixIcon: Icon(
+                  Icons.notes_outlined,
+                ),
+              ),
+            ),
+          ),
+          ListTile(
+            title: Text("Note",
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.secondary)),
+          ),
+          ListTile(
+            title: TextField(
+              autofocus: true,
+              minLines: 1,
+              maxLength: 500,
+              maxLengthEnforcement: MaxLengthEnforcement.enforced,
+              controller: controllerNote,
               textCapitalization: TextCapitalization.sentences,
               decoration: const InputDecoration(
                 border: InputBorder.none,

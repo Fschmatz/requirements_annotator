@@ -21,18 +21,20 @@ class _ApplicationTileState extends State<ApplicationTile> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+      margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+
       child: ListTile(
+
         onTap: () => Navigator.push(
             context,
             MaterialPageRoute<void>(
               builder: (BuildContext context) => RequirementList(
-                appId: widget.app.id,
+                app: widget.app,
               ),
               fullscreenDialog: true,
             )),
         title: Text(widget.app.name),
-        subtitle: Text(widget.app.description),
+        subtitle: widget.app.description.isEmpty ? null : Text(widget.app.description),
       ),
     );
   }

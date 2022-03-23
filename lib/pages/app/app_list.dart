@@ -45,7 +45,7 @@ class _AppListState extends State<AppList> {
             itemBuilder: (context, index) {
               return ApplicationTile(
                 app: App(
-                  _appsList[index]['id'],
+                  _appsList[index]['id_app'],
                   _appsList[index]['name'],
                   _appsList[index]['description'],
                 )

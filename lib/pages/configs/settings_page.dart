@@ -65,7 +65,6 @@ class _SettingsPageState extends State<SettingsPage> {
               leading: const Icon(Icons.brightness_6_outlined),
               title: const Text(
                 "App Theme",
-                style: TextStyle(fontSize: 16),
               ),
               subtitle: Text(
                 getThemeStringFormatted(),
@@ -84,7 +83,6 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               title: const Text(
                 "App Info",
-                style: TextStyle(fontSize: 16),
               ),
               onTap: () {
                 Navigator.push(
@@ -101,7 +99,6 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               title: const Text(
                 "Changelog",
-                style: TextStyle(fontSize: 16),
               ),
               onTap: () {
                 Navigator.push(

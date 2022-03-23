@@ -3,9 +3,13 @@ import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:requirements_annotator/util/theme.dart';
 
 import 'app.dart';
+import 'db/db_creator.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  final dbCreator = DbCreator.instance;
+  dbCreator.initDatabase();
 
   runApp(
     EasyDynamicThemeWidget(

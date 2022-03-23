@@ -10,6 +10,11 @@ ThemeData light = ThemeData(
         primary: Colors.cyan,
         secondary: Colors.cyan,
     ),
+    listTileTheme: const ListTileThemeData(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(12)),
+      ),
+    ),
     appBarTheme: const AppBarTheme(
         color: Color(0xFFFFFFFF),
         elevation: 0,
@@ -80,6 +85,11 @@ ThemeData dark = ThemeData(
         background: Color(0xFF202124),
         primary:  Color(0xFF68DEDA),
         secondary: Color(0xFF68DEDA)
+    ),
+    listTileTheme: const ListTileThemeData(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(12)),
+      ),
     ),
     appBarTheme: const AppBarTheme(
         color: Color(0xFF202124),

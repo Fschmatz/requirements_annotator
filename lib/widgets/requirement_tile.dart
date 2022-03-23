@@ -21,14 +21,10 @@ class _RequirementTileState extends State<RequirementTile> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+      margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
       child: ListTile(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-        ),
         title: Text(widget.requirement.name),
-
-
+        subtitle: widget.requirement.note.isEmpty ? null : Text(widget.requirement.note),
       ),
     );
   }
