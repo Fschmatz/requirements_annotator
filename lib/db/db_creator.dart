@@ -27,8 +27,8 @@ class DbCreator {
 
 
     await db.execute('''    
-           CREATE TABLE apps (
-             id_app INTEGER PRIMARY KEY,
+           CREATE TABLE applications (
+             id_application INTEGER PRIMARY KEY,
              name TEXT NOT NULL, 
              description TEXT                    
           )        
@@ -48,8 +48,8 @@ class DbCreator {
     //direct inserts for tests
     Batch batch = db.batch();
 
-    batch.insert('apps', {
-      'id_app': 1,
+    batch.insert('applications', {
+      'id_application': 1,
       'name': 'Requirements App',
       'description': 'Application for writing down software requirements.',
     });

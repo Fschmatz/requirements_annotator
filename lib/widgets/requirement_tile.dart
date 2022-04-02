@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:requirements_annotator/classes/requirement.dart';
 
+import '../pages/requirement/requirement_new_edit.dart';
+
 class RequirementTile extends StatefulWidget {
 
   Requirement requirement;
@@ -20,12 +22,20 @@ class _RequirementTileState extends State<RequirementTile> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-      child: ListTile(
-        title: Text(widget.requirement.name),
-        subtitle: widget.requirement.note.isEmpty ? null : Text(widget.requirement.note),
-      ),
+    return ListTile(
+      onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) => RequirementNewEdit(
+              edit: true,
+              appId: widget.requirement.appId,
+              requirement: widget.requirement,
+              refreshList: initState,
+            ),
+            fullscreenDialog: true,
+          )),
+      title: Text(widget.requirement.name),
+      subtitle: widget.requirement.note.isEmpty ? null : Text(widget.requirement.note),
     );
   }
 }

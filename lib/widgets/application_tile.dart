@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:requirements_annotator/classes/app.dart';
+import 'package:requirements_annotator/classes/application.dart';
 import 'package:requirements_annotator/pages/requirement/requirement_list.dart';
 
 class ApplicationTile extends StatefulWidget {
 
-  App app;
+  Application app;
   ApplicationTile({Key? key, required this.app}) : super(key: key);
 
   @override
@@ -21,10 +21,8 @@ class _ApplicationTileState extends State<ApplicationTile> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-
+      margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
       child: ListTile(
-
         onTap: () => Navigator.push(
             context,
             MaterialPageRoute<void>(

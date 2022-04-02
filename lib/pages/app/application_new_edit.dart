@@ -1,22 +1,34 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:requirements_annotator/db/app_dao.dart';
+import 'package:requirements_annotator/classes/application.dart';
+import 'package:requirements_annotator/db/application_dao.dart';
 import '../../widgets/dialog_alert_error.dart';
 
-class AppNewEdit extends StatefulWidget {
+class ApplicationNewEdit extends StatefulWidget {
+
+  bool edit;
+  Application? application;
 
   @override
-  _AppNewEditState createState() => _AppNewEditState();
+  _ApplicationNewEditState createState() => _ApplicationNewEditState();
 
-  AppNewEdit({Key? key}) : super(key: key);
+  ApplicationNewEdit({Key? key, required this.edit, this.application}) : super(key: key);
 }
 
-class _AppNewEditState extends State<AppNewEdit> {
+class _ApplicationNewEditState extends State<ApplicationNewEdit> {
 
   TextEditingController controllerName = TextEditingController();
   TextEditingController controllerDescription = TextEditingController();
-  final apps = AppDao.instance;
+  final apps = ApplicationDao.instance;
+
+  @override
+  void initState() {
+    if(widget.edit){
+      controllerName.text = widget.application!.name;
+      controllerDescription.text = widget.application!.description;
+    }
+    super.initState();
+  }
 
   String checkForErrors() {
     String errors = "";
@@ -28,20 +40,20 @@ class _AppNewEditState extends State<AppNewEdit> {
 
   Future<void> _saveApp() async {
     Map<String, dynamic> row = {
-      AppDao.columnName: controllerName.text,
-      AppDao.columnDescription: controllerDescription.text,
+      ApplicationDao.columnName: controllerName.text,
+      ApplicationDao.columnDescription: controllerDescription.text,
     };
     final idTask = await apps.insert(row);
   }
 
-  /*Future<void> _updateTask() async {
+  void _updateApp() async {
     Map<String, dynamic> row = {
-      TaskDao.columnId: widget.task.id,
-      TaskDao.columnTitle: customControllerTitle.text,
-      TaskDao.columnNote: customControllerNote.text,
+      ApplicationDao.columnIdApplication: widget.application!.id,
+      ApplicationDao.columnName: controllerName.text,
+      ApplicationDao.columnDescription: controllerDescription.text,
     };
-    final update = await tasks.update(row);
-  }*/
+    final update = await apps.update(row);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +68,11 @@ class _AppNewEditState extends State<AppNewEdit> {
             onPressed: () async {
               String errors = checkForErrors();
               if (errors.isEmpty) {
-                _saveApp();
+                  if (widget.edit) {
+                    _updateApp();
+                  } else {
+                    _saveApp();
+                  }
                 Navigator.of(context).pop();
               } else {
                 showDialog(
@@ -69,7 +85,7 @@ class _AppNewEditState extends State<AppNewEdit> {
             },
           )
         ],
-        title: const Text('New App'),
+        title: const Text('New Application'),
       ),
       body: ListView(
         children: [
@@ -82,7 +98,7 @@ class _AppNewEditState extends State<AppNewEdit> {
           ),
           ListTile(
             title: TextField(
-              autofocus: true,
+              autofocus: widget.edit ? false : true,
               minLines: 1,
               maxLength: 150,
               maxLengthEnforcement: MaxLengthEnforcement.enforced,

@@ -77,7 +77,7 @@ class AppInfoPage extends StatelessWidget {
           const ListTile(
             leading: Icon(Icons.messenger_outline),
             title: Text(
-              "Money unfortunately leads to Happiness & Sadness in today’s times.",
+              "A goal without a plan is just a wish.",
             ),
           ),
         ]));

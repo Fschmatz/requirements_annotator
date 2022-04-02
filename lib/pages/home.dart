@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:requirements_annotator/pages/requirement/requirement_new_edit.dart';
-import 'app/app_list.dart';
-import 'app/app_new_edit.dart';
+import '../db/application_dao.dart';
+import 'app/applications_list.dart';
+import 'app/application_new_edit.dart';
 import 'configs/settings_page.dart';
 
 class Home extends StatefulWidget {
@@ -12,12 +13,22 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<Map<String, dynamic>> repositoriesList = [];
-  bool loading = false;
+  List<Map<String, dynamic>> _appsList = [];
+  bool loading = true;
 
   @override
   void initState() {
+    getAllApplications();
     super.initState();
+  }
+
+  Future<void> getAllApplications() async {
+    final tasks = ApplicationDao.instance;
+    var resp = await tasks.queryAllRowsByName();
+    setState(() {
+      _appsList = resp;
+      loading = false;
+    });
   }
 
   @override
@@ -34,9 +45,11 @@ class _HomeState extends State<Home> {
                   Navigator.push(
                       context,
                       MaterialPageRoute<void>(
-                        builder: (BuildContext context) => AppNewEdit(),
+                        builder: (BuildContext context) => ApplicationNewEdit(
+                          edit: false,
+                        ),
                         fullscreenDialog: true,
-                      ));
+                      )).then((value) => getAllApplications());
                 }),
             const SizedBox(
               width: 10,
@@ -59,7 +72,9 @@ class _HomeState extends State<Home> {
           duration: const Duration(milliseconds: 600),
           child: loading
               ? const Center(child: SizedBox.shrink())
-              : const AppList()
+              : ApplicationsList(
+            appsList: _appsList,
+          )
         ));
   }
 }

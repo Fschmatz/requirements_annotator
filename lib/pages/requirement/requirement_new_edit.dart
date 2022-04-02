@@ -1,25 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:requirements_annotator/classes/requirement.dart';
 import 'package:requirements_annotator/db/requirement_dao.dart';
 import '../../widgets/dialog_alert_error.dart';
 
 class RequirementNewEdit extends StatefulWidget {
-
   Function() refreshList;
   int appId;
+  bool edit;
+  Requirement? requirement;
 
   @override
   _RequirementNewEditState createState() => _RequirementNewEditState();
 
-  RequirementNewEdit({Key? key, required this.appId, required this.refreshList}) : super(key: key);
+  RequirementNewEdit(
+      {Key? key,
+      this.requirement,
+      required this.appId,
+      required this.refreshList,
+      required this.edit})
+      : super(key: key);
 }
 
 class _RequirementNewEditState extends State<RequirementNewEdit> {
-
   TextEditingController controllerName = TextEditingController();
   TextEditingController controllerNote = TextEditingController();
   bool required = false;
   final reqs = RequirementDao.instance;
+
+  @override
+  void initState() {
+    if (widget.edit) {
+      controllerName.text = widget.requirement!.name;
+      controllerNote.text = widget.requirement!.note;
+      if (widget.requirement!.state == 1) {
+        required = true;
+      }
+    }
+    super.initState();
+  }
 
   String checkForErrors() {
     String errors = "";
@@ -29,7 +48,7 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
     return errors;
   }
 
-  Future<void> _save() async {
+  Future<void> _saveRequirement() async {
     Map<String, dynamic> row = {
       RequirementDao.columnName: controllerName.text,
       RequirementDao.columnNote: controllerNote.text,
@@ -39,6 +58,20 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
     final idTask = await reqs.insert(row);
   }
 
+  void _updateRequirement() async {
+    Map<String, dynamic> row = {
+      RequirementDao.columnId: widget.requirement!.id,
+      RequirementDao.columnName: controllerName.text,
+      RequirementDao.columnNote: controllerNote.text,
+      RequirementDao.columnState: required == true ? 1 : 0,
+      RequirementDao.columnAppId: widget.requirement!.appId,
+    };
+    final update = await reqs.update(row);
+  }
+
+ /* void _delete() async {
+    final deleted = await reqs.delete(widget.requirement!.state);
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +86,15 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
             onPressed: () async {
               String errors = checkForErrors();
               if (errors.isEmpty) {
-                _save();
-                widget.refreshList();
+                if (widget.edit) {
+                  //TENHO Q MELHORAR A LOGICA DO EDIT COMO DEVE SER ABERTO
+                  // PARA ENTÃO AJUSTAR O REFRESH!
+                  _updateRequirement();
+                } else {
+                  _saveRequirement();
+                  widget.refreshList();
+                }
+
                 Navigator.of(context).pop();
               } else {
                 showDialog(
@@ -80,7 +120,7 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
           ),
           ListTile(
             title: TextField(
-              autofocus: true,
+              autofocus: widget.edit ? false : true,
               minLines: 1,
               maxLength: 500,
               maxLengthEnforcement: MaxLengthEnforcement.enforced,
@@ -137,7 +177,6 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
               setState(() {
                 required = !required;
               });
-              print(required);
             },
           ),
         ],
