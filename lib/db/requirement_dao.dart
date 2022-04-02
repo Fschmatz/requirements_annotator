@@ -70,4 +70,9 @@ class RequirementDao {
     Database db = await instance.database;
     return await db.delete(table, where: '$columnId = ?', whereArgs: [id]);
   }
+
+  Future<int> deleteAllFromApplicantion(int idApp) async {
+    Database db = await instance.database;
+    return await db.delete(table, where: '$columnAppId = ?', whereArgs: [idApp]);
+  }
 }

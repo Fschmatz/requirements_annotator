@@ -4,13 +4,16 @@ import 'package:requirements_annotator/classes/requirement.dart';
 import 'package:requirements_annotator/db/application_dao.dart';
 import 'package:requirements_annotator/db/requirement_dao.dart';
 import 'package:requirements_annotator/pages/requirement/requirement_new_edit.dart';
+import 'package:requirements_annotator/widgets/dialog_print_requirements.dart';
 import '../../widgets/requirement_tile.dart';
 import '../app/application_new_edit.dart';
 
 class RequirementList extends StatefulWidget {
   Application app;
+  Function() refreshHome;
 
-  RequirementList({Key? key, required this.app}) : super(key: key);
+  RequirementList({Key? key, required this.app, required this.refreshHome})
+      : super(key: key);
 
   @override
   _RequirementListState createState() => _RequirementListState();
@@ -23,11 +26,11 @@ class _RequirementListState extends State<RequirementList> {
 
   @override
   void initState() {
-    getAllByAppId();
+    getAllRequirementsByAppId();
     super.initState();
   }
 
-  Future<void> getAllByAppId() async {
+  Future<void> getAllRequirementsByAppId() async {
     final reqs = RequirementDao.instance;
     var respFunc = await reqs.queryAllByIdAppState(widget.app.id, 1);
     var respNotFunc = await reqs.queryAllByIdAppState(widget.app.id, 0);
@@ -56,6 +59,7 @@ class _RequirementListState extends State<RequirementList> {
               ),
               onPressed: () {
                 _delete();
+                widget.refreshHome();
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
               },
@@ -67,8 +71,10 @@ class _RequirementListState extends State<RequirementList> {
   }
 
   void _delete() async {
+    final reqs = RequirementDao.instance;
     final apps = ApplicationDao.instance;
     final deleted = await apps.delete(widget.app.id);
+    final deleteReqs = await reqs.deleteAllFromApplicantion(widget.app.id);
   }
 
   @override
@@ -79,31 +85,37 @@ class _RequirementListState extends State<RequirementList> {
       appBar: AppBar(
         title: Text(widget.app.name),
         actions: [
-          IconButton(
-              icon: const Icon(
-                Icons.edit_outlined,
-              ),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context) => ApplicationNewEdit(
-                        edit: true,
-                        application:  widget.app,
-                      ),
-                      fullscreenDialog: true,
-                    ));
-              }),
-          const SizedBox(
-            width: 10,
-          ),
-          IconButton(
-              icon: const Icon(
-                Icons.delete_outline,
-              ),
-              onPressed: () {
-                showAlertDialogOkDelete(context);
-              }),
+          PopupMenuButton<int>(
+              icon: const Icon(Icons.more_vert_outlined),
+              itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
+                    const PopupMenuItem<int>(value: 0, child: Text('Edit')),
+                    const PopupMenuItem<int>(value: 1, child: Text('Delete')),
+                    const PopupMenuItem<int>(value: 2, child: Text('Print')),
+                  ],
+              onSelected: (int value) {
+                if (value == 0) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => ApplicationNewEdit(
+                          edit: true,
+                          application: widget.app,
+                        ),
+                        fullscreenDialog: true,
+                      ));
+                } else if (value == 1) {
+                  showAlertDialogOkDelete(context);
+                } else if (value == 2) {
+                      showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return DialogPrintRequirements(
+                          funcReq: _reqListFunc,
+                          nonFuncReq: _reqListNotFunc,
+                        );
+                      });
+                }
+              })
         ],
       ),
       body: AnimatedSwitcher(
@@ -135,6 +147,8 @@ class _RequirementListState extends State<RequirementList> {
                             itemCount: _reqListFunc.length,
                             itemBuilder: (context, index) {
                               return RequirementTile(
+                                refreshRequirementList:
+                                    getAllRequirementsByAppId,
                                 requirement: Requirement(
                                   _reqListFunc[index]['id_requirement'],
                                   _reqListFunc[index]['name'],
@@ -154,7 +168,8 @@ class _RequirementListState extends State<RequirementList> {
                     ),
                     _reqListNotFunc.isEmpty
                         ? const ListTile(
-                            title: Text('There must be something to put in here...'),
+                            title: Text(
+                                'There must be something to put in here...'),
                           )
                         : ListView.separated(
                             separatorBuilder:
@@ -167,6 +182,8 @@ class _RequirementListState extends State<RequirementList> {
                             itemCount: _reqListNotFunc.length,
                             itemBuilder: (context, index) {
                               return RequirementTile(
+                                refreshRequirementList:
+                                    getAllRequirementsByAppId,
                                 requirement: Requirement(
                                   _reqListNotFunc[index]['id_requirement'],
                                   _reqListNotFunc[index]['name'],
@@ -191,7 +208,7 @@ class _RequirementListState extends State<RequirementList> {
               context,
               MaterialPageRoute<void>(
                 builder: (BuildContext context) => RequirementNewEdit(
-                  refreshList: getAllByAppId,
+                  refreshList: getAllRequirementsByAppId,
                   appId: widget.app.id,
                   edit: false,
                 ),

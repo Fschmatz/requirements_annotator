@@ -145,7 +145,7 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
           ),
           ListTile(
             title: TextField(
-              autofocus: true,
+              autofocus: false,
               minLines: 1,
               maxLength: 500,
               maxLengthEnforcement: MaxLengthEnforcement.enforced,
@@ -168,11 +168,11 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
                     fontWeight: FontWeight.w500,
                     color: Theme.of(context).colorScheme.secondary)),
           ),
-          CheckboxListTile(
+          SwitchListTile(
             activeColor: Theme.of(context).colorScheme.secondary,
             key: UniqueKey(),
             value: required,
-            title: const Text('Required'),
+            title: const Text('Functional'),
             onChanged: (v) {
               setState(() {
                 required = !required;

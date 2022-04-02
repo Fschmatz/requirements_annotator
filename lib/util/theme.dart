@@ -31,6 +31,12 @@ ThemeData light = ThemeData(
         borderRadius: BorderRadius.all(Radius.circular(12)),
       ),
     ),
+    popupMenuTheme: const PopupMenuThemeData(
+      color:  Color(0xFFF6F6F6),
+      shape:  RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(4)),
+      ),
+    ),
     inputDecorationTheme: InputDecorationTheme(
         focusColor:  Colors.cyan,
         contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
@@ -91,6 +97,12 @@ ThemeData dark = ThemeData(
         borderRadius: BorderRadius.all(Radius.circular(12)),
       ),
     ),
+    popupMenuTheme: const PopupMenuThemeData(
+      color: Color(0xFF343539),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(4)),
+      ),
+    ),
     appBarTheme: const AppBarTheme(
         color: Color(0xFF202124),
         elevation: 0,
@@ -102,7 +114,7 @@ ThemeData dark = ThemeData(
             fontWeight: FontWeight.w400,
             color: Color(0xFFFFFFFF))),
     cardTheme: const CardTheme(
-      color: Color(0xFF313034),
+      color: Color(0xFF303134),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(12)),
       ),
@@ -127,7 +139,7 @@ ThemeData dark = ThemeData(
             ),
             borderRadius: BorderRadius.circular(10.0))),
     dialogTheme: const DialogTheme(
-      backgroundColor: Color(0xFF313034),
+      backgroundColor: Color(0xFF303134),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(28)),
       ),

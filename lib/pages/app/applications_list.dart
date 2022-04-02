@@ -5,8 +5,9 @@ import '../../widgets/application_tile.dart';
 class ApplicationsList extends StatefulWidget {
 
   List<Map<String, dynamic>> appsList;
+  Function() refreshHome;
 
-  ApplicationsList({Key? key,required this.appsList}) : super(key: key);
+  ApplicationsList({Key? key,required this.appsList, required this.refreshHome}) : super(key: key);
 
   @override
   _ApplicationsListState createState() => _ApplicationsListState();
@@ -25,6 +26,7 @@ class _ApplicationsListState extends State<ApplicationsList> {
             itemCount: widget.appsList.length,
             itemBuilder: (context, index) {
               return ApplicationTile(
+                refreshHome: widget.refreshHome,
                 app: Application(
                   widget.appsList[index]['id_application'],
                   widget.appsList[index]['name'],

@@ -80,6 +80,24 @@ class AppInfoPage extends StatelessWidget {
               "A goal without a plan is just a wish.",
             ),
           ),
+          ListTile(
+            title: Text("Note About Requirements",
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: themeColorApp)),
+          ),
+          const ListTile(
+            leading: Icon(Icons.note_outlined),
+            title: Text(
+              '''
+A FUNCTIONAL REQUIREMENT expresses an action that must be performed through the system, that is, a functional requirement is “what the system MUST do“.
+
+A NON-FUNCTIONAL requirement can be defined as “how the system should do”.
+''',
+            ),
+          ),
+          const SizedBox(height: 50,)
         ]));
   }
 }

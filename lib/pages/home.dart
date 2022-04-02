@@ -73,6 +73,7 @@ class _HomeState extends State<Home> {
           child: loading
               ? const Center(child: SizedBox.shrink())
               : ApplicationsList(
+            refreshHome: getAllApplications,
             appsList: _appsList,
           )
         ));

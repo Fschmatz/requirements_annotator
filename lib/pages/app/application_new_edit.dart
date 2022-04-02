@@ -123,7 +123,7 @@ class _ApplicationNewEditState extends State<ApplicationNewEdit> {
           ),
           ListTile(
             title: TextField(
-              autofocus: true,
+              autofocus: false,
               minLines: 1,
               maxLength: 1000,
               maxLengthEnforcement: MaxLengthEnforcement.enforced,

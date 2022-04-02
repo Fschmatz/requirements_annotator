@@ -5,7 +5,9 @@ import 'package:requirements_annotator/pages/requirement/requirement_list.dart';
 class ApplicationTile extends StatefulWidget {
 
   Application app;
-  ApplicationTile({Key? key, required this.app}) : super(key: key);
+  Function() refreshHome;
+
+  ApplicationTile({Key? key, required this.app, required this.refreshHome}) : super(key: key);
 
   @override
   _ApplicationTileState createState() => _ApplicationTileState();
@@ -23,10 +25,12 @@ class _ApplicationTileState extends State<ApplicationTile> {
     return Card(
       margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
       child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(vertical: 3,horizontal: 16),
         onTap: () => Navigator.push(
             context,
             MaterialPageRoute<void>(
               builder: (BuildContext context) => RequirementList(
+                refreshHome: widget.refreshHome,
                 app: widget.app,
               ),
               fullscreenDialog: true,

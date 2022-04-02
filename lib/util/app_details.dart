@@ -1,16 +1,21 @@
 class AppDetails{
 
-  static String appVersion = "0.6.0";
+  static String appVersion = "1.0.0";
   static String appName = "Requirements Annotator Fschmatz";
   static String repositoryLink = "";
 
   static String changelogCurrent = '''  
-0.6.0
-- Edit Requirement and Application
-- Delete Application
+1.0.0
+- Technically Usable
+- UI Changes
+- "Print"
 ''';
 
   static String changelogsOld = '''  
+0.6.0
+- Edit Requirement and Application
+- Delete Application
+
 0.5.0
 - List View
 - Separate Functional from Non-Functional
