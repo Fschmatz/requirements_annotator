@@ -9,6 +9,7 @@ class RequirementNewEdit extends StatefulWidget {
   int appId;
   bool edit;
   Requirement? requirement;
+  bool? functional;
 
   @override
   _RequirementNewEditState createState() => _RequirementNewEditState();
@@ -18,6 +19,7 @@ class RequirementNewEdit extends StatefulWidget {
       this.requirement,
       required this.appId,
       required this.refreshList,
+      this.functional,
       required this.edit})
       : super(key: key);
 }
@@ -30,6 +32,9 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
 
   @override
   void initState() {
+    if (!widget.edit) {
+      required = widget.functional!;
+    }
     if (widget.edit) {
       controllerName.text = widget.requirement!.name;
       controllerNote.text = widget.requirement!.note;
@@ -69,10 +74,6 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
     final update = await reqs.update(row);
   }
 
- /* void _delete() async {
-    final deleted = await reqs.delete(widget.requirement!.state);
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,8 +88,6 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
               String errors = checkForErrors();
               if (errors.isEmpty) {
                 if (widget.edit) {
-                  //TENHO Q MELHORAR A LOGICA DO EDIT COMO DEVE SER ABERTO
-                  // PARA ENTÃO AJUSTAR O REFRESH!
                   _updateRequirement();
                 } else {
                   _saveRequirement();
@@ -118,10 +117,12 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
                     fontWeight: FontWeight.w500,
                     color: Theme.of(context).colorScheme.secondary)),
           ),
-          ListTile(
-            title: TextField(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child : TextField(
               autofocus: widget.edit ? false : true,
               minLines: 1,
+              maxLines: 5,
               maxLength: 500,
               maxLengthEnforcement: MaxLengthEnforcement.enforced,
               controller: controllerName,
@@ -143,10 +144,12 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
                     fontWeight: FontWeight.w500,
                     color: Theme.of(context).colorScheme.secondary)),
           ),
-          ListTile(
-            title: TextField(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child : TextField(
               autofocus: false,
               minLines: 1,
+              maxLines: 5,
               maxLength: 500,
               maxLengthEnforcement: MaxLengthEnforcement.enforced,
               controller: controllerNote,
@@ -166,7 +169,8 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
                 style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
-                    color: Theme.of(context).colorScheme.secondary)),
+                    color: Theme.of(context).colorScheme.secondary
+                )),
           ),
           SwitchListTile(
             activeColor: Theme.of(context).colorScheme.secondary,

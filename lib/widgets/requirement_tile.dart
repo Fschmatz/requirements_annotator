@@ -60,7 +60,7 @@ class _RequirementTileState extends State<RequirementTile> {
     showModalBottomSheet(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(25.0), topRight: Radius.circular(25.0)),
+              topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
         ),
         isScrollControlled: true,
         context: context,

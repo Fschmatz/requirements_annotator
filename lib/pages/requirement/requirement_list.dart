@@ -5,6 +5,7 @@ import 'package:requirements_annotator/db/application_dao.dart';
 import 'package:requirements_annotator/db/requirement_dao.dart';
 import 'package:requirements_annotator/pages/requirement/requirement_new_edit.dart';
 import 'package:requirements_annotator/widgets/dialog_print_requirements.dart';
+import '../../util/utils_functions.dart';
 import '../../widgets/requirement_tile.dart';
 import '../app/application_new_edit.dart';
 
@@ -79,6 +80,7 @@ class _RequirementListState extends State<RequirementList> {
 
   @override
   Widget build(BuildContext context) {
+    final Brightness _listNameTextBrightness = Theme.of(context).brightness;
     Color themeColorApp = Theme.of(context).colorScheme.primary;
 
     return Scaffold(
@@ -102,11 +104,11 @@ class _RequirementListState extends State<RequirementList> {
                           application: widget.app,
                         ),
                         fullscreenDialog: true,
-                      ));
+                      )).then((value) => widget.refreshHome());
                 } else if (value == 1) {
                   showAlertDialogOkDelete(context);
                 } else if (value == 2) {
-                      showDialog(
+                  showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return DialogPrintRequirements(
@@ -126,16 +128,47 @@ class _RequirementListState extends State<RequirementList> {
                 physics: const AlwaysScrollableScrollPhysics(),
                 children: [
                     ListTile(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(0)),
+                      ),
+                      tileColor: themeColorApp.withOpacity(0.15),
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) =>
+                                RequirementNewEdit(
+                              refreshList: getAllRequirementsByAppId,
+                              appId: widget.app.id,
+                              edit: false,
+                              functional: true,
+                            ),
+                            fullscreenDialog: true,
+                          )),
                       title: Text('Functional',
                           style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: themeColorApp)),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: _listNameTextBrightness == Brightness.dark
+                                ? lightenColor(themeColorApp, 20)
+                                : darkenColor(themeColorApp, 20),
+                          )),
+                      trailing: Icon(
+                        Icons.add,
+                        color: _listNameTextBrightness == Brightness.dark
+                            ? lightenColor(themeColorApp, 20)
+                            : darkenColor(themeColorApp, 20),
+                      ),
                     ),
                     _reqListFunc.isEmpty
-                        ? const ListTile(
-                            title: Text('Shall we begin?'),
-                          )
+                        ? ListTile(
+                            title: Text(
+                            'Shall we begin?',
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .headline1!
+                                    .color),
+                          ))
                         : ListView.separated(
                             separatorBuilder:
                                 (BuildContext context, int index) =>
@@ -160,16 +193,47 @@ class _RequirementListState extends State<RequirementList> {
                             },
                           ),
                     ListTile(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(0)),
+                      ),
+                      tileColor: themeColorApp.withOpacity(0.15),
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) =>
+                                RequirementNewEdit(
+                              refreshList: getAllRequirementsByAppId,
+                              appId: widget.app.id,
+                              edit: false,
+                              functional: false,
+                            ),
+                            fullscreenDialog: true,
+                          )),
                       title: Text('Non-Functional',
                           style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
-                              color: themeColorApp)),
+                            color: _listNameTextBrightness == Brightness.dark
+                                ? lightenColor(themeColorApp, 20)
+                                : darkenColor(themeColorApp, 20),
+                          )),
+                      trailing: Icon(
+                        Icons.add,
+                        color: _listNameTextBrightness == Brightness.dark
+                            ? lightenColor(themeColorApp, 20)
+                            : darkenColor(themeColorApp, 20),
+                      ),
                     ),
                     _reqListNotFunc.isEmpty
-                        ? const ListTile(
+                        ? ListTile(
                             title: Text(
-                                'There must be something to put in here...'),
+                              'There must be something to put in here...',
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .headline1!
+                                      .color),
+                            ),
                           )
                         : ListView.separated(
                             separatorBuilder:
@@ -199,7 +263,7 @@ class _RequirementListState extends State<RequirementList> {
                     )
                   ]),
       ),
-      floatingActionButton: FloatingActionButton(
+      /* floatingActionButton: FloatingActionButton(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(16)),
         ),
@@ -219,7 +283,7 @@ class _RequirementListState extends State<RequirementList> {
           Icons.add,
           color: Colors.black87,
         ),
-      ),
+      ),*/
     );
   }
 }

@@ -25,7 +25,7 @@ class _ApplicationTileState extends State<ApplicationTile> {
     return Card(
       margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(vertical: 3,horizontal: 16),
+        minVerticalPadding: 12,
         onTap: () => Navigator.push(
             context,
             MaterialPageRoute<void>(

@@ -96,10 +96,12 @@ class _ApplicationNewEditState extends State<ApplicationNewEdit> {
                     fontWeight: FontWeight.w500,
                     color: Theme.of(context).colorScheme.secondary)),
           ),
-          ListTile(
-            title: TextField(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child : TextField(
               autofocus: widget.edit ? false : true,
               minLines: 1,
+              maxLines: 5,
               maxLength: 150,
               maxLengthEnforcement: MaxLengthEnforcement.enforced,
               controller: controllerName,
@@ -121,10 +123,12 @@ class _ApplicationNewEditState extends State<ApplicationNewEdit> {
                     fontWeight: FontWeight.w500,
                     color: Theme.of(context).colorScheme.secondary)),
           ),
-          ListTile(
-            title: TextField(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child : TextField(
               autofocus: false,
               minLines: 1,
+              maxLines: 5,
               maxLength: 1000,
               maxLengthEnforcement: MaxLengthEnforcement.enforced,
               controller: controllerDescription,
