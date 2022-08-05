@@ -28,12 +28,11 @@ class _ApplicationTileState extends State<ApplicationTile> {
         minVerticalPadding: 12,
         onTap: () => Navigator.push(
             context,
-            MaterialPageRoute<void>(
+            MaterialPageRoute(
               builder: (BuildContext context) => RequirementList(
                 refreshHome: widget.refreshHome,
                 app: widget.app,
               ),
-              fullscreenDialog: true,
             )),
         title: Text(widget.app.name),
         subtitle: widget.app.description.isEmpty ? null : Text(widget.app.description),

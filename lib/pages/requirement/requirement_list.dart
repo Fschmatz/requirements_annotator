@@ -87,37 +87,39 @@ class _RequirementListState extends State<RequirementList> {
       appBar: AppBar(
         title: Text(widget.app.name),
         actions: [
-          PopupMenuButton<int>(
-              icon: const Icon(Icons.more_vert_outlined),
-              itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
-                    const PopupMenuItem<int>(value: 0, child: Text('Edit')),
-                    const PopupMenuItem<int>(value: 1, child: Text('Delete')),
-                    const PopupMenuItem<int>(value: 2, child: Text('Print')),
-                  ],
-              onSelected: (int value) {
-                if (value == 0) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute<void>(
-                        builder: (BuildContext context) => ApplicationNewEdit(
-                          edit: true,
-                          application: widget.app,
-                        ),
-                        fullscreenDialog: true,
-                      )).then((value) => widget.refreshHome());
-                } else if (value == 1) {
-                  showAlertDialogOkDelete(context);
-                } else if (value == 2) {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return DialogPrintRequirements(
-                          funcReq: _reqListFunc,
-                          nonFuncReq: _reqListNotFunc,
-                        );
-                      });
-                }
-              })
+          Theme(
+            data: Theme.of(context).copyWith(useMaterial3: false),
+            child: PopupMenuButton<int>(
+                icon: const Icon(Icons.more_vert_outlined),
+                itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
+                      const PopupMenuItem<int>(value: 0, child: Text('Edit')),
+                      const PopupMenuItem<int>(value: 1, child: Text('Delete')),
+                      const PopupMenuItem<int>(value: 2, child: Text('Print')),
+                    ],
+                onSelected: (int value) {
+                  if (value == 0) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => ApplicationNewEdit(
+                            edit: true,
+                            application: widget.app,
+                          ),
+                        )).then((value) => widget.refreshHome());
+                  } else if (value == 1) {
+                    showAlertDialogOkDelete(context);
+                  } else if (value == 2) {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return DialogPrintRequirements(
+                            funcReq: _reqListFunc,
+                            nonFuncReq: _reqListNotFunc,
+                          );
+                        });
+                  }
+                }),
+          )
         ],
       ),
       body: AnimatedSwitcher(
@@ -132,18 +134,6 @@ class _RequirementListState extends State<RequirementList> {
                         borderRadius: BorderRadius.all(Radius.circular(0)),
                       ),
                       tileColor: themeColorApp.withOpacity(0.15),
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute<void>(
-                            builder: (BuildContext context) =>
-                                RequirementNewEdit(
-                              refreshList: getAllRequirementsByAppId,
-                              appId: widget.app.id,
-                              edit: false,
-                              functional: true,
-                            ),
-                            fullscreenDialog: true,
-                          )),
                       title: Text('Functional',
                           style: TextStyle(
                             fontSize: 14,
@@ -152,12 +142,7 @@ class _RequirementListState extends State<RequirementList> {
                                 ? lightenColor(themeColorApp, 20)
                                 : darkenColor(themeColorApp, 20),
                           )),
-                      trailing: Icon(
-                        Icons.add,
-                        color: _listNameTextBrightness == Brightness.dark
-                            ? lightenColor(themeColorApp, 20)
-                            : darkenColor(themeColorApp, 20),
-                      ),
+
                     ),
                     _reqListFunc.isEmpty
                         ? ListTile(
@@ -197,18 +182,6 @@ class _RequirementListState extends State<RequirementList> {
                         borderRadius: BorderRadius.all(Radius.circular(0)),
                       ),
                       tileColor: themeColorApp.withOpacity(0.15),
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute<void>(
-                            builder: (BuildContext context) =>
-                                RequirementNewEdit(
-                              refreshList: getAllRequirementsByAppId,
-                              appId: widget.app.id,
-                              edit: false,
-                              functional: false,
-                            ),
-                            fullscreenDialog: true,
-                          )),
                       title: Text('Non-Functional',
                           style: TextStyle(
                               fontSize: 14,
@@ -217,12 +190,6 @@ class _RequirementListState extends State<RequirementList> {
                                 ? lightenColor(themeColorApp, 20)
                                 : darkenColor(themeColorApp, 20),
                           )),
-                      trailing: Icon(
-                        Icons.add,
-                        color: _listNameTextBrightness == Brightness.dark
-                            ? lightenColor(themeColorApp, 20)
-                            : darkenColor(themeColorApp, 20),
-                      ),
                     ),
                     _reqListNotFunc.isEmpty
                         ? ListTile(
@@ -263,27 +230,28 @@ class _RequirementListState extends State<RequirementList> {
                     )
                   ]),
       ),
-      /* floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(16)),
         ),
         onPressed: () {
           Navigator.push(
               context,
-              MaterialPageRoute<void>(
-                builder: (BuildContext context) => RequirementNewEdit(
-                  refreshList: getAllRequirementsByAppId,
-                  appId: widget.app.id,
-                  edit: false,
-                ),
-                fullscreenDialog: true,
+              MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    RequirementNewEdit(
+                      refreshList: getAllRequirementsByAppId,
+                      appId: widget.app.id,
+                      edit: false,
+                      functional: true,
+                    ),
               ));
         },
-        child: const Icon(
+        child: Icon(
           Icons.add,
-          color: Colors.black87,
+          color: Theme.of(context).colorScheme.onPrimary
         ),
-      ),*/
+      ),
     );
   }
 }

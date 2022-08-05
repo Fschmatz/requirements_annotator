@@ -44,16 +44,12 @@ class _HomeState extends State<Home> {
                 onPressed: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute<void>(
+                      MaterialPageRoute(
                         builder: (BuildContext context) => ApplicationNewEdit(
                           edit: false,
                         ),
-                        fullscreenDialog: true,
                       )).then((value) => getAllApplications());
                 }),
-            const SizedBox(
-              width: 10,
-            ),
             IconButton(
                 icon: const Icon(
                   Icons.settings_outlined,
@@ -61,21 +57,19 @@ class _HomeState extends State<Home> {
                 onPressed: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute<void>(
+                      MaterialPageRoute(
                         builder: (BuildContext context) => const SettingsPage(),
-                        fullscreenDialog: true,
                       ));
                 }),
           ],
         ),
         body: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 600),
-          child: loading
-              ? const Center(child: SizedBox.shrink())
-              : ApplicationsList(
-            refreshHome: getAllApplications,
-            appsList: _appsList,
-          )
-        ));
+            duration: const Duration(milliseconds: 600),
+            child: loading
+                ? const Center(child: SizedBox.shrink())
+                : ApplicationsList(
+                    refreshHome: getAllApplications,
+                    appsList: _appsList,
+                  )));
   }
 }
