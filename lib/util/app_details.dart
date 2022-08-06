@@ -1,11 +1,11 @@
 class AppDetails{
 
-  static String appVersion = "1.1.0";
+  static String appVersion = "1.1.1";
   static String appName = "Requirements Annotator Fschmatz";
   static String repositoryLink = "https://github.com/Fschmatz/requirements_annotator";
 
   static String changelogCurrent = '''  
-1.1.0
+1.1.1
 - Various UI changes
 - Bug fixes
 ''';

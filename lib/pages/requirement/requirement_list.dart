@@ -92,10 +92,10 @@ class _RequirementListState extends State<RequirementList> {
             child: PopupMenuButton<int>(
                 icon: const Icon(Icons.more_vert_outlined),
                 itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
-                      const PopupMenuItem<int>(value: 0, child: Text('Edit')),
-                      const PopupMenuItem<int>(value: 1, child: Text('Delete')),
-                      const PopupMenuItem<int>(value: 2, child: Text('Print')),
-                    ],
+                  const PopupMenuItem<int>(value: 0, child: Text('Edit')),
+                  const PopupMenuItem<int>(value: 1, child: Text('Delete')),
+                  const PopupMenuItem<int>(value: 2, child: Text('Print')),
+                ],
                 onSelected: (int value) {
                   if (value == 0) {
                     Navigator.push(
@@ -127,108 +127,108 @@ class _RequirementListState extends State<RequirementList> {
         child: loading
             ? const Center(child: SizedBox.shrink())
             : ListView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                children: [
-                    ListTile(
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(0)),
-                      ),
-                      tileColor: themeColorApp.withOpacity(0.15),
-                      title: Text('Functional',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: _listNameTextBrightness == Brightness.dark
-                                ? lightenColor(themeColorApp, 20)
-                                : darkenColor(themeColorApp, 20),
-                          )),
+            physics: const AlwaysScrollableScrollPhysics(),
+            children: [
+              ListTile(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(0)),
+                ),
+                tileColor: themeColorApp.withOpacity(0.15),
+                title: Text('Functional',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: _listNameTextBrightness == Brightness.dark
+                          ? lightenColor(themeColorApp, 20)
+                          : darkenColor(themeColorApp, 20),
+                    )),
 
+              ),
+              _reqListFunc.isEmpty
+                  ? ListTile(
+                  title: Text(
+                    'Shall we begin?',
+                    style: TextStyle(
+                        color: Theme.of(context)
+                            .textTheme
+                            .headline1!
+                            .color),
+                  ))
+                  : ListView.separated(
+                separatorBuilder:
+                    (BuildContext context, int index) =>
+                const SizedBox(
+                  height: 0,
+                ),
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: _reqListFunc.length,
+                itemBuilder: (context, index) {
+                  return RequirementTile(
+                    refreshRequirementList:
+                    getAllRequirementsByAppId,
+                    requirement: Requirement(
+                      _reqListFunc[index]['id_requirement'],
+                      _reqListFunc[index]['name'],
+                      _reqListFunc[index]['note'],
+                      _reqListFunc[index]['state'],
+                      _reqListFunc[index]['id_app'],
                     ),
-                    _reqListFunc.isEmpty
-                        ? ListTile(
-                            title: Text(
-                            'Shall we begin?',
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .headline1!
-                                    .color),
-                          ))
-                        : ListView.separated(
-                            separatorBuilder:
-                                (BuildContext context, int index) =>
-                                    const SizedBox(
-                              height: 0,
-                            ),
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: _reqListFunc.length,
-                            itemBuilder: (context, index) {
-                              return RequirementTile(
-                                refreshRequirementList:
-                                    getAllRequirementsByAppId,
-                                requirement: Requirement(
-                                  _reqListFunc[index]['id_requirement'],
-                                  _reqListFunc[index]['name'],
-                                  _reqListFunc[index]['note'],
-                                  _reqListFunc[index]['state'],
-                                  _reqListFunc[index]['id_app'],
-                                ),
-                              );
-                            },
-                          ),
-                    ListTile(
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(0)),
-                      ),
-                      tileColor: themeColorApp.withOpacity(0.15),
-                      title: Text('Non-Functional',
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            color: _listNameTextBrightness == Brightness.dark
-                                ? lightenColor(themeColorApp, 20)
-                                : darkenColor(themeColorApp, 20),
-                          )),
+                  );
+                },
+              ),
+              ListTile(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(0)),
+                ),
+                tileColor: themeColorApp.withOpacity(0.15),
+                title: Text('Non-Functional',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: _listNameTextBrightness == Brightness.dark
+                          ? lightenColor(themeColorApp, 20)
+                          : darkenColor(themeColorApp, 20),
+                    )),
+              ),
+              _reqListNotFunc.isEmpty
+                  ? ListTile(
+                title: Text(
+                  'There must be something to put in here...',
+                  style: TextStyle(
+                      color: Theme.of(context)
+                          .textTheme
+                          .headline1!
+                          .color),
+                ),
+              )
+                  : ListView.separated(
+                separatorBuilder:
+                    (BuildContext context, int index) =>
+                const SizedBox(
+                  height: 0,
+                ),
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: _reqListNotFunc.length,
+                itemBuilder: (context, index) {
+                  return RequirementTile(
+                    refreshRequirementList:
+                    getAllRequirementsByAppId,
+                    requirement: Requirement(
+                      _reqListNotFunc[index]['id_requirement'],
+                      _reqListNotFunc[index]['name'],
+                      _reqListNotFunc[index]['note'],
+                      _reqListNotFunc[index]['state'],
+                      _reqListNotFunc[index]['id_app'],
                     ),
-                    _reqListNotFunc.isEmpty
-                        ? ListTile(
-                            title: Text(
-                              'There must be something to put in here...',
-                              style: TextStyle(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .headline1!
-                                      .color),
-                            ),
-                          )
-                        : ListView.separated(
-                            separatorBuilder:
-                                (BuildContext context, int index) =>
-                                    const SizedBox(
-                              height: 0,
-                            ),
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: _reqListNotFunc.length,
-                            itemBuilder: (context, index) {
-                              return RequirementTile(
-                                refreshRequirementList:
-                                    getAllRequirementsByAppId,
-                                requirement: Requirement(
-                                  _reqListNotFunc[index]['id_requirement'],
-                                  _reqListNotFunc[index]['name'],
-                                  _reqListNotFunc[index]['note'],
-                                  _reqListNotFunc[index]['state'],
-                                  _reqListNotFunc[index]['id_app'],
-                                ),
-                              );
-                            },
-                          ),
-                    const SizedBox(
-                      height: 50,
-                    )
-                  ]),
+                  );
+                },
+              ),
+              const SizedBox(
+                height: 50,
+              )
+            ]),
       ),
       floatingActionButton: FloatingActionButton(
         shape: const RoundedRectangleBorder(
@@ -248,10 +248,11 @@ class _RequirementListState extends State<RequirementList> {
               ));
         },
         child: Icon(
-          Icons.add,
-          color: Theme.of(context).colorScheme.onPrimary
+            Icons.add,
+            color: Theme.of(context).colorScheme.onPrimary
         ),
       ),
     );
   }
 }
+

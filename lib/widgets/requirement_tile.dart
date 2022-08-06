@@ -79,18 +79,16 @@ class _RequirementTileState extends State<RequirementTile> {
                       Navigator.of(context).pop();
                       Navigator.push(
                           context,
-                          MaterialPageRoute<void>(
+                          MaterialPageRoute(
                             builder: (BuildContext context) => RequirementNewEdit(
                               edit: true,
                               appId: widget.requirement.appId,
                               requirement: widget.requirement,
                               refreshList: initState,
                             ),
-                            fullscreenDialog: true,
                           ));
                     },
                   ),
-                  const Divider(),
                   ListTile(
                     leading: const Icon(Icons.delete_outline_outlined),
                     title: const Text(

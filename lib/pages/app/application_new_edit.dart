@@ -2,40 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:requirements_annotator/classes/application.dart';
 import 'package:requirements_annotator/db/application_dao.dart';
-import '../../widgets/dialog_alert_error.dart';
 
 class ApplicationNewEdit extends StatefulWidget {
-
   bool edit;
   Application? application;
 
   @override
   _ApplicationNewEditState createState() => _ApplicationNewEditState();
 
-  ApplicationNewEdit({Key? key, required this.edit, this.application}) : super(key: key);
+  ApplicationNewEdit({Key? key, required this.edit, this.application})
+      : super(key: key);
 }
 
 class _ApplicationNewEditState extends State<ApplicationNewEdit> {
-
   TextEditingController controllerName = TextEditingController();
   TextEditingController controllerDescription = TextEditingController();
   final apps = ApplicationDao.instance;
+  bool _validName = true;
 
   @override
   void initState() {
-    if(widget.edit){
+    if (widget.edit) {
       controllerName.text = widget.application!.name;
       controllerDescription.text = widget.application!.description;
     }
     super.initState();
   }
 
-  String checkForErrors() {
-    String errors = "";
+  bool validateTextFields() {
     if (controllerName.text.isEmpty) {
-      errors += "Name is empty\n";
+      _validName = false;
+      return false;
     }
-    return errors;
+    return true;
   }
 
   Future<void> _saveApp() async {
@@ -66,21 +65,17 @@ class _ApplicationNewEditState extends State<ApplicationNewEdit> {
               Icons.save_outlined,
             ),
             onPressed: () async {
-              String errors = checkForErrors();
-              if (errors.isEmpty) {
-                  if (widget.edit) {
-                    _updateApp();
-                  } else {
-                    _saveApp();
-                  }
+              if (validateTextFields()) {
+                if (widget.edit) {
+                  _updateApp();
+                } else {
+                  _saveApp();
+                }
                 Navigator.of(context).pop();
               } else {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return dialogAlertErrors(errors, context);
-                  },
-                );
+               setState(() {
+                 _validName;
+               });
               }
             },
           )
@@ -89,16 +84,9 @@ class _ApplicationNewEditState extends State<ApplicationNewEdit> {
       ),
       body: ListView(
         children: [
-          ListTile(
-            title: Text("Name",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).colorScheme.secondary)),
-          ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child : TextField(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: TextField(
               autofocus: widget.edit ? false : true,
               minLines: 1,
               maxLines: 5,
@@ -106,26 +94,17 @@ class _ApplicationNewEditState extends State<ApplicationNewEdit> {
               maxLengthEnforcement: MaxLengthEnforcement.enforced,
               controller: controllerName,
               textCapitalization: TextCapitalization.sentences,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
+              decoration: InputDecoration(
+                labelText: "Name",
                 counterText: "",
                 helperText: "* Required",
-                prefixIcon: Icon(
-                  Icons.notes_outlined,
-                ),
+                errorText: (_validName) ? null : "Name is empty",
               ),
             ),
           ),
-          ListTile(
-            title: Text("Description",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).colorScheme.secondary)),
-          ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child : TextField(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: TextField(
               autofocus: false,
               minLines: 1,
               maxLines: 5,
@@ -134,11 +113,8 @@ class _ApplicationNewEditState extends State<ApplicationNewEdit> {
               controller: controllerDescription,
               textCapitalization: TextCapitalization.sentences,
               decoration: const InputDecoration(
-                border: InputBorder.none,
                 counterText: "",
-                prefixIcon: Icon(
-                  Icons.notes_outlined,
-                ),
+                labelText: "Description",
               ),
             ),
           ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:requirements_annotator/classes/requirement.dart';
 import 'package:requirements_annotator/db/requirement_dao.dart';
-import '../../widgets/dialog_alert_error.dart';
 
 class RequirementNewEdit extends StatefulWidget {
   Function() refreshList;
@@ -29,6 +28,8 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
   TextEditingController controllerNote = TextEditingController();
   bool required = false;
   final reqs = RequirementDao.instance;
+  bool _validName = true;
+  bool _validNote = true;
 
   @override
   void initState() {
@@ -45,12 +46,17 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
     super.initState();
   }
 
-  String checkForErrors() {
-    String errors = "";
+  bool validateTextFields() {
+    bool ok = true;
     if (controllerName.text.isEmpty) {
-      errors += "Name is empty\n";
+      _validName = false;
+      ok = false;
     }
-    return errors;
+    if (controllerNote.text.isEmpty) {
+      _validNote = false;
+      ok = false;
+    }
+    return ok;
   }
 
   Future<void> _saveRequirement() async {
@@ -85,23 +91,19 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
               Icons.save_outlined,
             ),
             onPressed: () async {
-              String errors = checkForErrors();
-              if (errors.isEmpty) {
+              if (validateTextFields()) {
                 if (widget.edit) {
                   _updateRequirement();
                 } else {
                   _saveRequirement();
                   widget.refreshList();
                 }
-
                 Navigator.of(context).pop();
               } else {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return dialogAlertErrors(errors, context);
-                  },
-                );
+               setState(() {
+                 _validName;
+                 _validNote;
+               });
               }
             },
           )
@@ -110,16 +112,9 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
       ),
       body: ListView(
         children: [
-          ListTile(
-            title: Text("Name",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).colorScheme.secondary)),
-          ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child : TextField(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: TextField(
               autofocus: widget.edit ? false : true,
               minLines: 1,
               maxLines: 5,
@@ -127,26 +122,17 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
               maxLengthEnforcement: MaxLengthEnforcement.enforced,
               controller: controllerName,
               textCapitalization: TextCapitalization.sentences,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
+              decoration: InputDecoration(
+                labelText: "Name",
                 counterText: "",
                 helperText: "* Required",
-                prefixIcon: Icon(
-                  Icons.notes_outlined,
-                ),
+                errorText: (_validName) ? null : "Name is empty",
               ),
             ),
           ),
-          ListTile(
-            title: Text("Note",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).colorScheme.secondary)),
-          ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child : TextField(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: TextField(
               autofocus: false,
               minLines: 1,
               maxLines: 5,
@@ -154,29 +140,26 @@ class _RequirementNewEditState extends State<RequirementNewEdit> {
               maxLengthEnforcement: MaxLengthEnforcement.enforced,
               controller: controllerNote,
               textCapitalization: TextCapitalization.sentences,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
+              decoration: InputDecoration(
                 counterText: "",
                 helperText: "* Required",
-                prefixIcon: Icon(
-                  Icons.notes_outlined,
-                ),
+                labelText: "Note",
+                errorText: (_validNote) ? null : "Note is empty",
               ),
             ),
           ),
           ListTile(
             title: Text("State",
                 style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: Theme.of(context).colorScheme.secondary
-                )),
+                    color: Theme.of(context).hintColor)),
           ),
           SwitchListTile(
             activeColor: Theme.of(context).colorScheme.secondary,
             key: UniqueKey(),
             value: required,
-            title: const Text('Functional'),
+            title: Text(required ? 'Functional' : 'Non-Functional'),
             onChanged: (v) {
               setState(() {
                 required = !required;
